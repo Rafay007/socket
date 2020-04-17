@@ -30,7 +30,7 @@ class Quiz_server():
             print( "name: ", name)
             print ("pass: ", password)
 
-            file = open(r"D:\np_proj\quiz_np\students.txt", "r") #Open students txt file
+            file = open(r"D:\np_proj\quiz_np\students.txt", "r")
             str_file = file.read() 
             arr=str_file.split('\n')
             for cred in arr:
@@ -45,7 +45,7 @@ class Quiz_server():
                 if chk: 
                     
                     client.send("authenticated \n".encode()) 
-                    file2 = open(r"D:\np_proj\quiz_np\attendance.txt", "w")	#open the authentication txt file
+                    file2 = open(r"D:\np_proj\quiz_np\attendance.txt", "w")	
                     file2.write(name) 
                     file2.write(": yes") 
                     file2.close() 
@@ -54,19 +54,19 @@ class Quiz_server():
                     print( "Time  : ", time.localtime(time.time())[3], ":", time.localtime(time.time())[4])
 
                     questionFile = open(r"D:\np_proj\quiz_np\questions.txt", "r")
-                    questions = questionFile.read()
-                    questions = [y for y in (x.strip() for x in questions.splitlines()) if y]
+                    ques = questionFile.read()
+                    ques = [y for y in (x.strip() for x in ques.splitlines()) if y]
                     questionFile.close()
 
                     answerFile = open(r"D:\np_proj\quiz_np\answers.txt","r")
-                    answers = answerFile.read()
-                    answers = [y for y in (x.strip() for x in answers.splitlines()) if y]
+                    ans = answerFile.read()
+                    ans = [y for y in (x.strip() for x in ans.splitlines()) if y]
                     answerFile.close()
                     points = 0
-                    for number in range(0, len(questions)): 
-	                    client.send(questions[number].encode())
+                    for number in range(0, len(ques)): 
+	                    client.send(ques[number].encode())
 	                    answer = client.recv(1024).decode()
-	                    if str(answer.lower()) == str(answers[number]):
+	                    if str(answer.lower()) == str(ans[number]):
 	                    	points = points + 10
                     
                     loc_for_time_2 = time.localtime(time.time())[4]
@@ -86,25 +86,20 @@ class Quiz_server():
         try:
             serverSocket = socket(AF_INET, SOCK_STREAM)
         except:
-            print ("socket cannot be initiated")
             exit(1)
-        print ("Socket is initiated")
+
         try:
             serverSocket.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
         except:
-            print ("Socket cannot used now")
             exit(1)
-        print ("Socket is used")
+
         try:
             serverSocket.bind((serverName, serverPort))
         except:
-            print ("Binding cannot perform")
             exit(1)
-        print( "Binding is done!")
         try:
             serverSocket.listen(45)
         except:
-            print ("sorry server cannot connect now for some reason")
             exit(1)
         print ("server is running and listening")
 
